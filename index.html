@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Canopy Configurator</title>
+<link rel="stylesheet" href="./styles.css" />
+<script type="importmap">
+{
+  "imports": {
+    "three": "./vendor/three/three.module.js",
+    "three/addons/": "./vendor/three/addons/"
+  }
+}
+</script>
+</head>
+<body>
+  <canvas id="viewport"></canvas>
+
+  <aside class="panel" id="panel">
+    <header class="panel__head">
+      <h1>Навіс</h1>
+      <p>Параметри конструкції</p>
+    </header>
+
+    <div class="field" data-param="width">
+      <div class="field__top"><label for="width">Ширина</label>
+        <span class="field__value"><input type="number" id="width" min="2" max="8" step="0.05" /> м</span>
+      </div>
+      <input type="range" id="width-range" min="2" max="8" step="0.05" />
+    </div>
+
+    <div class="field" data-param="depth">
+      <div class="field__top"><label for="depth">Глибина</label>
+        <span class="field__value"><input type="number" id="depth" min="2" max="8" step="0.05" /> м</span>
+      </div>
+      <input type="range" id="depth-range" min="2" max="8" step="0.05" />
+    </div>
+
+    <div class="field" data-param="height">
+      <div class="field__top"><label for="height">Висота</label>
+        <span class="field__value"><input type="number" id="height" min="2" max="8" step="0.05" /> м</span>
+      </div>
+      <input type="range" id="height-range" min="2" max="8" step="0.05" />
+    </div>
+
+    <div class="field field--choice">
+      <label for="profile">Профіль периметру</label>
+      <select id="profile"></select>
+    </div>
+
+    <div class="field field--choice">
+      <label for="color">Колір профілю</label>
+      <div class="swatches" id="color"></div>
+    </div>
+
+    <div class="field field--choice">
+      <label for="framing">Тільки каркас</label>
+      <input type="checkbox" id="framing" />
+    </div>
+
+    <dl class="specs" id="specs"></dl>
+
+    <div class="panel__actions">
+      <button type="button" id="fit">Вписати у вигляд</button>
+      <button type="button" id="reset">Скинути параметри</button>
+    </div>
+
+    <p class="hint">
+      Обертання — ліва кнопка · переміщення — права або два пальці · зум — колесо, до курсора ·
+      подвійний клік — наблизитись до деталі
+    </p>
+  </aside>
+
+  <div class="tag" id="tag" hidden></div>
+
+  <div class="overlay" id="overlay"><span>Завантаження моделей…</span></div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

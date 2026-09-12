@@ -1,0 +1,13 @@
+{
+  "name": "canopy-configurator",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Parametric wooden canopy configurator built on plain Three.js",
+  "scripts": {
+    "start": "node server.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
