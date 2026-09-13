@@ -3,6 +3,9 @@ import { EDGE_PROFILES, GEO, PART } from '../config.js';
 const HALF_PI = Math.PI / 2;
 const TOLERANCE = 1e-6;
 
+const ROOF_LEVEL =
+  GEO.beam.height + GEO.rafter.height + GEO.deck.thickness + GEO.roof.thickness;
+
 const DIRECTION_ROTATION = {
   '+x': 0,
   '-x': Math.PI,
@@ -151,7 +154,7 @@ function addRoofFraming(push, { width, depth, height }, xLines, zLines) {
   const spanLines = spanIsX ? xLines : zLines;
 
   const columnAxis = spanHalf - GEO.column.section / 2;
-  const halfLength = edgeAxis + GEO.beam.halfWidth;
+  const halfLength = spanHalf + GEO.frieze.innerFace;
 
   const rafterPositions = subdivide(runLines, GEO.rafter.step);
   for (const runCoord of rafterPositions) {
@@ -231,16 +234,14 @@ function addRoofSheet(push, { width, depth, height }) {
 
 function addEdgeProfile(push, { width, depth, height, profile, color }) {
   const spec = EDGE_PROFILES[profile] ?? EDGE_PROFILES.closed;
-  const y = height + GEO.frieze.outerRise + GEO.frieze.height - spec.height;
-  const boundX = width / 2 + GEO.frieze.midFace;
-  const boundZ = depth / 2 + GEO.frieze.midFace;
+  const y = height + ROOF_LEVEL + GEO.roof.bedding;
+  const boundX = width / 2 + GEO.frieze.outerFace + GEO.roof.projection;
+  const boundZ = depth / 2 + GEO.frieze.outerFace + GEO.roof.projection;
   const tint = { material: color };
 
   if (!spec.corner) {
-    const throughX = width <= depth;
-    const mitre = 2 * spec.mitre;
-    const lengthAlongX = throughX ? 2 * boundX : 2 * boundX - mitre;
-    const lengthAlongZ = throughX ? 2 * boundZ - mitre : 2 * boundZ;
+    const lengthAlongX = 2 * boundX;
+    const lengthAlongZ = 2 * boundZ;
     for (const side of ['+z', '-z']) {
       const p = runPlacement(side, boundZ, lengthAlongX);
       push(spec.run, [p.x, y, p.z], p.rotationY, [lengthAlongX, 1, 1], tint);
@@ -294,14 +295,15 @@ export function buildLayout(params) {
   addFriezeRing(push, params, {
     inner: GEO.frieze.midFace,
     outer: GEO.frieze.outerFace,
-    base: GEO.frieze.outerRise
+    base: ROOF_LEVEL - GEO.frieze.height
   });
   const rafters = addRoofFraming(push, params, xLines, zLines);
   const deckBoards = addDeck(push, params);
   const roofSheets = addRoofSheet(push, params);
   addEdgeProfile(push, params);
 
-  const roofTop = params.height + GEO.frieze.outerRise + GEO.frieze.height;
+  const edge = EDGE_PROFILES[params.profile] ?? EDGE_PROFILES.closed;
+  const roofTop = params.height + ROOF_LEVEL + edge.height;
 
   return {
     placements,

@@ -52,8 +52,7 @@ export const EDGE_PROFILES = {
     corner: null,
     nose: 0,
     height: 0.0668,
-    cornerSize: 0,
-    mitre: 0.134
+    cornerSize: 0
   },
   round: {
     label: 'Зкруглений R20',
@@ -61,8 +60,7 @@ export const EDGE_PROFILES = {
     corner: PART.EDGE_ROUND_CORNER,
     nose: 0.04,
     height: 0.04,
-    cornerSize: 0.1395,
-    mitre: 0
+    cornerSize: 0.1395
   },
   straight: {
     label: 'Прямий зі скосом',
@@ -70,8 +68,7 @@ export const EDGE_PROFILES = {
     corner: PART.EDGE_STRAIGHT_CORNER,
     nose: 0.0141,
     height: 0.05,
-    cornerSize: 0.1,
-    mitre: 0
+    cornerSize: 0.1
   }
 };
 
@@ -100,11 +97,10 @@ export const GEO = {
     innerFace: 0.16,
     midFace: 0.18,
     outerFace: 0.2,
-    innerRise: 0.1,
-    outerRise: 0.2
+    innerRise: 0.1
   },
   rafter: { height: 0.15, width: 0.05, step: 0.5, length: 1 },
   insert: { length: 0.2, step: 0.6 },
   deck: { width: 0.19, thickness: 0.02, length: 1 },
-  roof: { thickness: 0.002, profileHeight: 0.0668, profileDepth: 0.134, sheetSize: 1 }
+  roof: { thickness: 0.002, sheetSize: 1, projection: 0.015, bedding: 0.001 }
 };
